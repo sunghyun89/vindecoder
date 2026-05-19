@@ -296,10 +296,10 @@
 		"KNAF81AF": {"model": "EV3 SV1 (25-27)", "engine": "SV1 EV 150kW 롱레인지", "trans": "감속기"},
 		"KNAD412F": {"model": "EV4 CT1 2026", "engine": "CT1 EV 150kW", "trans": "감속기"},
 		"KNAD413F": {"model": "EV4 CT1 2026", "engine": "CT1 EV 150kW 롱레인지", "trans": "감속기"},
-		"KNAH81BF": {"model": "EV5 OV1 (26-27)", "engine": OV1 EV 160kW, "trans": "감속기"},
-		"KNAH81AF": {"model": "EV5 OV1 (26-27)", "engine": OV1 EV 160kW 롱레인지, "trans": "감속기"},
-		"KNAH81EF": {"model": "EV5 OV1 (26-27)", "engine": OV1 EV 125+70kW E-AWD, "trans": "감속기"},
-		"KNAH81DF": {"model": "EV5 OV1 GT 2027, "engine": OV1 GT EV 155+70kW, "trans": "감속기"},
+		"KNAH81BF": {"model": "EV5 OV1 (26-27)", "engine": "OV1 EV 160kW", "trans": "감속기"},
+		"KNAH81AF": {"model": "EV5 OV1 (26-27)", "engine": "OV1 EV 160kW 롱레인지", "trans": "감속기"},
+		"KNAH81EF": {"model": "EV5 OV1 (26-27)", "engine": "OV1 EV 125+70kW E-AWD", "trans": "감속기"},
+		"KNAH81DF": {"model": "EV5 OV1 GT 2027", "engine": "OV1 GT EV 155+70kW", "trans": "감속기"},
 		"KNAC81BF": {"model": "EV6 CV (22-26)", "engine": "CV EV 160kW 2WD", "trans": "감속기"},
 		"KNAC81AF": {"model": "EV6 CV (22-26)", "engine": "CV EV 160kW 2WD 롱레인지", "trans": "감속기"},
 		"KNAC81DP": {"model": "EV6 CV (22-26)", "engine": "CV EV 70+160kW 4WD", "trans": "감속기"},
@@ -309,10 +309,10 @@
 		"KNAA811F": {"model": "EV9 MV (24-26)", "engine": "MV EV 160kW 2WD 롱레인지", "trans": "감속기"},
 		"KNAA815P": {"model": "EV9 MV (24-26)", "engine": "MV EV 160+160kW AWD GT Line", "trans": "감속기"},
 		"KNAA817F": {"model": "EV9 MV (24-26)", "engine": "MV EV 139+235kW GT", "trans": "감속기"},
-		"KNAS813F": {"model": "PV5 SW1 2026", "engine": SW1 EV 89.4kW 패신저, "trans": "감속기"},
-		"KNAS811F": {"model": "PV5 SW1 2026", "engine": SW1 EV 120kW 패신저 롱레인지, "trans": "감속기"},
-		"KNAW813F": {"model": "PV5 SW1 2026", "engine": SW1 EV 89.4kW 카고, "trans": "감속기"},
-		"KNAW811F": {"model": "PV5 SW1 2026", "engine": SW1 EV 120kW 카고 롱레인지, "trans": "감속기"},
+		"KNAS813F": {"model": "PV5 SW1 2026", "engine": "SW1 EV 89.4kW 패신저", "trans": "감속기"},
+		"KNAS811F": {"model": "PV5 SW1 2026", "engine": "SW1 EV 120kW 패신저 롱레인지", "trans": "감속기"},
+		"KNAW813F": {"model": "PV5 SW1 2026", "engine": "SW1 EV 89.4kW 카고", "trans": "감속기"},
+		"KNAW811F": {"model": "PV5 SW1 2026", "engine": "SW1 EV 120kW 카고 롱레인지", "trans": "감속기"},
 		"KNCSY7BB": {"model": "타스만 TK1 2026", "engine": "TK1 G 2.5 T-GDI", "trans": "AT"},
 		"KNCSY7BD": {"model": "타스만 TK1 2026", "engine": "TK1 G 2.5 T-GDI AWD", "trans": "AT+Transfer"}
 	};
@@ -322,19 +322,19 @@
 
   function normalize(v) {
     return (v||'').toUpperCase().replace(/\s+/g,'').trim();
-  }
+  };
 
   function getKeyFromVIN(vin) {
     if (!vin || vin.length < 9) return null;
     // 1-4 + 6-9 (0-indexed: 0..3 and 5..8)
     return vin.slice(0,4) + vin.slice(5,9);
-  }
+  };
 
   function decode(vin) {
     vin = normalize(vin);
     if (vin.length !== 17) {
       return { error: "VIN은 17자여야 합니다." };
-    }
+    };
     const key = getKeyFromVIN(vin);
     const yearCode = vin[9]; // 10번째 문자 (0-index)
     const year = YEAR_MAP[yearCode] || "알 수 없음";
@@ -345,16 +345,16 @@
         key, year, yearCode,
         warning: "데이터베이스에 일치하는 항목이 없습니다. VIN이 정확한지 확인하세요."
       };
-    }
+    };
     return { key, year, yearCode, ...hit };
-  }
+  };
 
   function render(res) {
     const box = document.getElementById('result');
     if (res.error) {
       box.innerHTML = `<span class="muted">${res.error}</span>`;
       return;
-    }
+    };
     const parts = [];
     parts.push('<div class="grid">');
     parts.push('<div class="key">매칭 키</div><div><code>'+ (res.key||'-') +'</code></div>');
@@ -365,9 +365,9 @@
     parts.push('</div>');
     if (res.warning) {
       parts.push('<div class="hint">⚠️ '+ res.warning +'</div>');
-    }
+    };
     box.innerHTML = parts.join('');
-  }
+  };
 
   document.getElementById('btn').addEventListener('click', () => {
     render(decode(document.getElementById('vin').value));
